@@ -1,10 +1,12 @@
 [project]
-name = "rag-tutorials"
+name = "rag"
 version = "0.1.0"
 description = "RAG (Retrieval-Augmented Generation) 튜토리얼"
 requires-python = ">=3.9"
 dependencies = [
     "langchain>=0.1.0",
+    "langchain-community>=0.0.10",
+    "langchain-ollama>=0.1.0",
     "chromadb>=0.4.0",
     "openai>=1.0.0",
     "tiktoken>=0.5.0",
@@ -17,4 +19,4 @@ only-include = ["*.py", "db/**", "rag-from-scratch/**"]
 
 [build-system]
 requires = ["hatchling"]
-build-backend = "hatchling.build" 
+build-backend = "hatchling.build"

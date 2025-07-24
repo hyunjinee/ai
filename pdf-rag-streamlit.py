@@ -1,16 +1,16 @@
-import streamlit as st
-import os
 import logging
-from langchain_community.document_loaders import UnstructuredPDFLoader
-from langchain_text_splitters import RecursiveCharacterTextSplitter
-from langchain_community.vectorstores import Chroma
-from langchain_ollama import OllamaEmbeddings
+import os
+
+import ollama
+import streamlit as st
 from langchain.prompts import ChatPromptTemplate, PromptTemplate
-from langchain_ollama import ChatOllama
+from langchain.retrievers.multi_query import MultiQueryRetriever
+from langchain_community.document_loaders import UnstructuredPDFLoader
+from langchain_community.vectorstores import Chroma
 from langchain_core.output_parsers import StrOutputParser
 from langchain_core.runnables import RunnablePassthrough
-from langchain.retrievers.multi_query import MultiQueryRetriever
-import ollama
+from langchain_ollama import ChatOllama, OllamaEmbeddings
+from langchain_text_splitters import RecursiveCharacterTextSplitter
 
 logging.basicConfig(level=logging.INFO)
 
@@ -25,7 +25,7 @@ def get_pdf_files(directory):
     """디렉토리에서 모든 PDF 파일 목록을 가져옵니다."""
     pdf_files = []
     for file in os.listdir(directory):
-        if file.lower().endswith('.pdf'):
+        if file.lower().endswith(".pdf"):
             pdf_files.append(os.path.join(directory, file))
     return pdf_files
 
@@ -41,11 +41,11 @@ def ingest_pdfs(pdf_files):
             logging.info(f"PDF loaded successfully: {pdf_file}")
         else:
             logging.error(f"PDF file not found at path: {pdf_file}")
-    
+
     if not all_documents:
         st.error("No PDF files were loaded successfully.")
         return None
-    
+
     return all_documents
 
 
@@ -88,11 +88,11 @@ def load_vector_db():
         if not pdf_files:
             st.error("No PDF files found in the directory.")
             return None
-        
+
         data = ingest_pdfs(pdf_files)
         if data is None:
             return None
-        
+
         # 문서를 청크로 분할
         chunks = split_documents(data)
 
@@ -185,7 +185,7 @@ def main():
                         full_response += chunk.content
                     # 실시간으로 응답 업데이트
                     response_container.markdown(full_response + "▌")
-                
+
                 # 최종 응답 표시
                 response_container.markdown(full_response)
             except Exception as e:

@@ -1,13 +1,11 @@
-import pandas as pd
+import gradio as gr
 import numpy as np
+import pandas as pd
 from dotenv import load_dotenv
-
+from langchain_chroma import Chroma
 from langchain_community.document_loaders import TextLoader
 from langchain_openai import OpenAIEmbeddings
 from langchain_text_splitters import CharacterTextSplitter
-from langchain_chroma import Chroma
-
-import gradio as gr
 
 load_dotenv()
 

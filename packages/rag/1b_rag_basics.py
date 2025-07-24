@@ -1,8 +1,9 @@
 import os
+
 import ollama
+
 # from langchain_community.vectorstores import Chroma
-from langchain_chroma import Chroma 
-from langchain_openai import OpenAIEmbeddings
+from langchain_chroma import Chroma
 from langchain_ollama import OllamaEmbeddings
 
 # Define the persistent directory

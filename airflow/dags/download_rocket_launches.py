@@ -1,13 +1,13 @@
 import json
 import pathlib
+from datetime import datetime
 
-import airflow
 import requests
 import requests.exceptions as requests_exceptions
+
 from airflow import DAG
 from airflow.operators.bash import BashOperator
 from airflow.operators.python import PythonOperator
-from datetime import datetime
 
 dag = DAG(
     dag_id="download_rocket_launches",

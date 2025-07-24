@@ -2,15 +2,14 @@ import textwrap as tr
 from typing import List, Optional
 
 import matplotlib.pyplot as plt
+import numpy as np
+import pandas as pd
 import plotly.express as px
+from openai import OpenAI
 from scipy import spatial
 from sklearn.decomposition import PCA
 from sklearn.manifold import TSNE
 from sklearn.metrics import average_precision_score, precision_recall_curve
-
-from openai import OpenAI
-import numpy as np
-import pandas as pd
 
 client = OpenAI(max_retries=5)
 

@@ -6,12 +6,10 @@
 # 6. retrieve the similar documents and present them to the user
 ## run pip install -r requirements.txt to install the required packages
 
-from langchain_community.document_loaders import UnstructuredPDFLoader
-from langchain_community.document_loaders import OnlinePDFLoader
+import ssl
 
 import nltk
-
-import ssl
+from langchain_community.document_loaders import UnstructuredPDFLoader
 
 try:
     _create_unverified_https_context = ssl._create_unverified_context
@@ -22,8 +20,8 @@ else:
 
 # nltk.download('punkt_tab')
 # nltk.download()
-nltk.download('punkt_tab')
-nltk.download('averaged_perceptron_tagger_eng')
+nltk.download("punkt_tab")
+nltk.download("averaged_perceptron_tagger_eng")
 # nltk.download('all') # 모든 패키지 다운로드 경우
 # nltk.download('popular') #
 # import nltk
@@ -34,7 +32,7 @@ model = "llama3.2"
 
 # Local PDF file uploads
 if doc_path:
-    print('start')
+    print("start")
     loader = UnstructuredPDFLoader(file_path=doc_path)
     data = loader.load()
     print("done loading....")

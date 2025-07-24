@@ -49,7 +49,7 @@ PARAMETER temperature 0.1
 """
 
 # ollama.create(model="myfirstmodel", modelfile=modelfile)
-ollama.create(model='myfirstmodel', from_='llama3.2', system="""
+ollama.create(model="myfirstmodel", from_="llama3.2", system="""
 FROM llama3.2
 SYSTEM You are very smart assistant who knows everything about oceans. You are very succinct and informative.
 PARAMETER temperature 0.1

@@ -1,5 +1,6 @@
-import requests
 import json
+
+import requests
 
 url = "http://localhost:11434/api/generate"
 
@@ -8,9 +9,8 @@ data = {
     "prompt": "tell me a short story and make it funny.",
 }
 
-response = requests.post(
-    url, json=data, stream=True
-)  # remove the stream=True to get the full response
+response = requests.post(url, json=data, stream=True)
+
 
 # check the response status
 if response.status_code == 200:

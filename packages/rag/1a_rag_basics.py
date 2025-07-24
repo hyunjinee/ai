@@ -3,8 +3,8 @@ import ollama
 from langchain.text_splitter import CharacterTextSplitter
 from langchain_community.document_loaders import TextLoader
 from langchain_community.vectorstores import Chroma
-from langchain_openai import OpenAIEmbeddings
 from langchain_ollama import OllamaEmbeddings
+
 # Define the directory containing the text file and the persistent directory
 current_dir = os.path.dirname(os.path.abspath(__file__))
 file_path = os.path.join("data", "books", "odyssey.txt")
@@ -44,9 +44,9 @@ if not os.path.exists(persistent_directory):
 
     # Create the vector store and persist it automatically
     print("\n--- Creating vector store ---")
-    db = Chroma.from_documents(
-        docs, embeddings, persist_directory=persistent_directory)
+    db = Chroma.from_documents(docs, embeddings, persist_directory=persistent_directory)
     print("\n--- Finished creating vector store ---")
 
 else:
+
     print("Vector store already exists. No need to initialize.")
