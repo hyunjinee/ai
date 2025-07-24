@@ -1,0 +1,18 @@
+[project]
+name = "chat-model"
+version = "0.1.0"
+description = "챗봇 모델 예제"
+requires-python = ">=3.9"
+dependencies = [
+    "langchain>=0.1.0",
+    "openai>=1.0.0",
+    "python-dotenv>=1.0.0",
+    "firebase-admin>=6.0.0",
+]
+
+[tool.hatch.build.targets.wheel]
+only-include = ["*.py"]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build" 
