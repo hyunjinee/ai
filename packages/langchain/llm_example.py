@@ -1,6 +1,6 @@
 import argparse
 
-from langchain_community.chat_models import ChatOllama
+from langchain_ollama import ChatOllama
 from langchain_core.callbacks import CallbackManager, StreamingStdOutCallbackHandler
 from langchain_core.prompts import ChatPromptTemplate
 
@@ -8,7 +8,7 @@ from langchain_core.prompts import ChatPromptTemplate
 def request_llm(message):
     llm = ChatOllama(
       model="gemma:7b",
-      callback_manager=CallbackManager([StreamingStdOutCallbackHandler()])
+      callbacks=[StreamingStdOutCallbackHandler()]
     )
     prompt = ChatPromptTemplate.from_template(
         """당신은 질문자의 친절한 안내자 뮤직이야.
