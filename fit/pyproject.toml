@@ -2,7 +2,7 @@
 name = "fine-tuning"
 version = "0.1.0"
 description = "Fine-tuning 모델 예제"
-requires-python = ">=3.9"
+requires-python = ">=3.10"
 dependencies = [
     "openai>=1.0.0",
     "pandas>=2.0.0",
@@ -12,6 +12,7 @@ dependencies = [
     "matplotlib>=3.7.0",
     "seaborn>=0.12.0",
     "python-dotenv>=1.0.0",
+    "langextract>=1.0.8",
 ]
 
 [tool.uv]

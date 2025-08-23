@@ -10,4 +10,7 @@ dev-dependencies = [
 [tool.uv.workspace]
 members = [
     "packages/*",
+]
+exclude = [
+    "packages/airflow",
 ] 
