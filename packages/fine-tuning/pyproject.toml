@@ -1,0 +1,5 @@
+[project]
+name = "fine-tuning"
+version = "0.1.0"
+description = "Fine-tuning package"
+dependencies = []

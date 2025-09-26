@@ -1,3 +1,9 @@
+[project]
+name = "ai"
+version = "0.1.0"
+description = "AI projects workspace"
+dependencies = []
+
 [tool.uv]
 dev-dependencies = [
     "pytest>=8.0.0",
