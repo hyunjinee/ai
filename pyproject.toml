@@ -2,7 +2,12 @@
 name = "ai"
 version = "0.1.0"
 description = "AI projects workspace"
-dependencies = []
+dependencies = [
+    "datasets>=4.1.1",
+    "jax>=0.4.30",
+    "jaxlib>=0.4.30",
+    "keras>=3.10.0",
+]
 
 [tool.uv]
 dev-dependencies = [
@@ -19,4 +24,5 @@ members = [
 ]
 exclude = [
     "packages/airflow",
+    "packages/books",
 ] 
