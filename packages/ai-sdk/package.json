@@ -1,0 +1,37 @@
+{
+  "name": "ai-sdk",
+  "version": "1.0.0",
+  "description": "AI SDK examples and learning project",
+  "type": "module",
+  "scripts": {
+    "dev": "tsx watch src/index.ts",
+    "start": "tsx src/index.ts",
+    "build": "tsc",
+    "test": "echo \"No tests yet\""
+  },
+  "keywords": [
+    "ai",
+    "ai-sdk",
+    "openai",
+    "anthropic",
+    "vercel"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@ai-sdk/anthropic": "1.0.8",
+    "@ai-sdk/cohere": "^2.0.18",
+    "@ai-sdk/google": "1.0.10",
+    "@ai-sdk/openai": "2.0.62",
+    "@ai-sdk/xai": "^1.0.4",
+    "ai": "5.0.87",
+    "dotenv": "16.4.5",
+    "ollama-ai-provider-v2": "1.5.2",
+    "zod": "^4.1.12"
+  },
+  "devDependencies": {
+    "@types/node": "22.10.1",
+    "tsx": "4.20.6",
+    "typescript": "5.9.3"
+  }
+}
