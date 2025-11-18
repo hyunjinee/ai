@@ -25,5 +25,7 @@ generation_output = model.generate(
 )
 
 print(input_ids)
+for id in input_ids[0]:
+    print(tokenizer.decode(id, skip_special_tokens=True), end="", flush=True)
 # Print the output
 print(tokenizer.decode(generation_output[0]))
