@@ -1,5 +1,5 @@
 [project]
-name = "fine-tuning"
+name = "fit-fine-tuning"
 version = "0.1.0"
 description = "Fine-tuning 모델 예제"
 requires-python = ">=3.10"
