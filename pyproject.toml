@@ -33,6 +33,7 @@ members = [
 ]
 exclude = [
     "packages/airflow",
+    "packages/ai-sdk",
     "packages/books",
     "packages/langraph-ts-examples",
 ] 

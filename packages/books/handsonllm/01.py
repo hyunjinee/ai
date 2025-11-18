@@ -28,7 +28,8 @@ outputs = model.generate(
     inputs,
     max_new_tokens=500,
     do_sample=False,
-    pad_token_id=tokenizer.eos_token_id
+    pad_token_id=tokenizer.eos_token_id,
+    use_cache=False  # cache 관련 문제 회피
 )
 
 # 디코딩
