@@ -1,0 +1,24 @@
+[project]
+name = "hyunjin"
+version = "0.1.0"
+description = "커맨드라인에서 동작하는 AI 코딩 에이전트"
+requires-python = ">=3.10"
+dependencies = [
+    "langchain>=0.3.0",
+    "langchain-openai>=0.2.0",
+    "langgraph>=0.2.0",
+    "openai>=1.0.0",
+    "rich>=13.0.0",
+    "prompt-toolkit>=3.0.0",
+    "python-dotenv>=1.0.0",
+]
+
+[project.scripts]
+hyunjin = "hyunjin.main:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["hyunjin"]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
