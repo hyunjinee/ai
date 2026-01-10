@@ -1,23 +1,24 @@
 [project]
-name = "hyunjin"
+name = "h-agent"
 version = "0.1.0"
 description = "커맨드라인에서 동작하는 AI 코딩 에이전트"
 requires-python = ">=3.10"
 dependencies = [
-    "langchain>=0.3.0",
-    "langchain-openai>=0.2.0",
-    "langgraph>=0.2.0",
-    "openai>=1.0.0",
-    "rich>=13.0.0",
-    "prompt-toolkit>=3.0.0",
-    "python-dotenv>=1.0.0",
+    "langchain>=1.2.3",
+    "langchain-openai>=1.1.7",
+    "langchain-ollama>=1.0.1",
+    "langgraph>=1.0.5",
+    "openai>=2.15.0",
+    "rich>=14.2.0",
+    "prompt-toolkit>=3.0.52",
+    "python-dotenv>=1.2.1",
 ]
 
 [project.scripts]
-hyunjin = "hyunjin.main:main"
+h = "h.main:main"
 
 [tool.hatch.build.targets.wheel]
-packages = ["hyunjin"]
+packages = ["h"]
 
 [build-system]
 requires = ["hatchling"]

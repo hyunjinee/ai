@@ -16,7 +16,7 @@ from rich.console import Console
 from rich.markdown import Markdown
 from rich.panel import Panel
 
-from hyunjin.agent import CodingAgent
+from h.agent import CodingAgent, OLLAMA_PREFIX, OLLAMA_MODELS
 
 # 환경 변수 로드
 load_dotenv()
@@ -32,31 +32,27 @@ prompt_style = Style.from_dict(
 )
 
 # 히스토리 파일 경로
-HISTORY_FILE = Path.home() / ".hyunjin_history"
+HISTORY_FILE = Path.home() / ".h_agent_history"
 
 
 def print_banner():
     """시작 배너 출력"""
     banner = """
-╔═══════════════════════════════════════════════════════════════╗
-║                                                               ║
-║   🤖  hyunjin  - AI 코딩 에이전트                             ║
-║                                                               ║
-║   명령어:                                                     ║
-║   • /help    - 도움말 표시                                    ║
-║   • /clear   - 대화 초기화                                    ║
-║   • /exit    - 종료                                           ║
-║   • /model   - 모델 변경                                      ║
-║   • /cd <경로> - 작업 디렉토리 변경                            ║
-║                                                               ║
-╚═══════════════════════════════════════════════════════════════╝
+╔═══════════════════════════════════════════════════╗
+║                                                   ║
+║   🤖  h  - AI 코딩 에이전트                       ║
+║                                                   ║
+║   /help - 도움말  /exit - 종료  /model - 모델    ║
+║                                                   ║
+╚═══════════════════════════════════════════════════╝
 """
     console.print(banner, style="cyan")
 
 
 def print_help():
     """도움말 출력"""
-    help_text = """
+    ollama_models_str = ", ".join(OLLAMA_MODELS[:3])
+    help_text = f"""
 ## 사용법
 
 자연어로 코딩 관련 요청을 입력하세요.
@@ -76,9 +72,17 @@ def print_help():
 | `/help` | 이 도움말 표시 |
 | `/clear` | 대화 히스토리 초기화 |
 | `/exit`, `/quit`, `/q` | 프로그램 종료 |
-| `/model <모델명>` | 사용할 모델 변경 (기본: gpt-4o) |
+| `/model <모델명>` | 사용할 모델 변경 |
+| `/models` | 사용 가능한 모델 목록 표시 |
 | `/cd <경로>` | 작업 디렉토리 변경 |
 | `/pwd` | 현재 작업 디렉토리 표시 |
+
+### 모델 사용법
+
+- **OpenAI**: `gpt-4o`, `gpt-4o-mini`, `gpt-4-turbo`
+- **Ollama**: `ollama:모델명` (예: `ollama:qwen2.5-coder:14b`)
+
+추천 Ollama 모델: {ollama_models_str}
 """
     console.print(Markdown(help_text))
 
@@ -139,9 +143,9 @@ def run_agent_streaming(agent: CodingAgent, user_input: str):
 def parse_args():
     """커맨드라인 인자 파싱"""
     parser = argparse.ArgumentParser(
-        prog="hyunjin",
+        prog="h",
         description="AI 코딩 에이전트 - 자연어로 코드를 작성하고 수정",
-        epilog="예: hyunjin '현재 디렉토리의 파일 목록을 보여줘'",
+        epilog="예: h '현재 디렉토리의 파일 목록을 보여줘'",
     )
     parser.add_argument(
         "prompt",
@@ -151,7 +155,7 @@ def parse_args():
     parser.add_argument(
         "-m", "--model",
         default="gpt-4o",
-        help="사용할 모델 (기본: gpt-4o)",
+        help="사용할 모델 (기본: gpt-4o, Ollama: ollama:모델명)",
     )
     parser.add_argument(
         "-c", "--continue",
@@ -180,7 +184,7 @@ def run_interactive(agent: CodingAgent, model_name: str):
     while True:
         try:
             user_input = session.prompt(
-                [("class:prompt", "hyunjin > ")],
+                [("class:prompt", "h > ")],
                 style=prompt_style,
             ).strip()
 
@@ -212,6 +216,21 @@ def run_interactive(agent: CodingAgent, model_name: str):
                     else:
                         console.print(f"[blue]현재 모델: {model_name}[/blue]")
                         console.print("사용법: /model <모델명>")
+                        console.print("예: /model gpt-4o-mini")
+                        console.print("예: /model ollama:qwen2.5-coder:14b")
+
+                elif cmd == "/models":
+                    console.print("[bold]사용 가능한 모델:[/bold]\n")
+                    console.print("[cyan]OpenAI:[/cyan]")
+                    console.print("  • gpt-4o (기본)")
+                    console.print("  • gpt-4o-mini")
+                    console.print("  • gpt-4-turbo")
+                    console.print()
+                    console.print("[cyan]Ollama (로컬):[/cyan]")
+                    for m in OLLAMA_MODELS:
+                        console.print(f"  • ollama:{m}")
+                    console.print()
+                    console.print("[dim]Ollama 사용: ollama:모델명 형식으로 지정[/dim]")
 
                 elif cmd == "/cd":
                     if arg:
@@ -249,13 +268,15 @@ def main():
     """메인 함수"""
     args = parse_args()
 
-    # API 키 확인
-    if not os.environ.get("OPENAI_API_KEY"):
-        console.print(
-            "[red]Error: OPENAI_API_KEY 환경 변수가 설정되지 않았습니다.[/red]"
-        )
-        console.print("export OPENAI_API_KEY='your-api-key' 명령으로 설정하세요.")
-        sys.exit(1)
+    # Ollama 모델이 아닌 경우 OpenAI API 키 확인
+    if not args.model.startswith(OLLAMA_PREFIX):
+        if not os.environ.get("OPENAI_API_KEY"):
+            console.print(
+                "[red]Error: OPENAI_API_KEY 환경 변수가 설정되지 않았습니다.[/red]"
+            )
+            console.print("export OPENAI_API_KEY='your-api-key' 명령으로 설정하세요.")
+            console.print("[dim]또는 Ollama 모델 사용: hyunjin -m ollama:qwen2.5-coder:14b[/dim]")
+            sys.exit(1)
 
     # 에이전트 초기화
     agent = CodingAgent(model_name=args.model)

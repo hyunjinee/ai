@@ -7,11 +7,24 @@ from typing import Annotated, TypedDict
 
 from langchain_core.messages import AIMessage, HumanMessage, SystemMessage, ToolMessage
 from langchain_openai import ChatOpenAI
+from langchain_ollama import ChatOllama
 from langgraph.graph import END, START, StateGraph
 from langgraph.graph.message import add_messages
 from langgraph.prebuilt import ToolNode
 
-from hyunjin.tools import ALL_TOOLS
+from h.tools import ALL_TOOLS
+
+# Ollama 모델 프리픽스
+OLLAMA_PREFIX = "ollama:"
+
+# 추천 Ollama 모델들
+OLLAMA_MODELS = [
+    "qwen2.5-coder:14b",
+    "qwen2.5-coder:7b",
+    "codellama:13b",
+    "deepseek-coder:6.7b",
+    "llama3.1:8b",
+]
 
 SYSTEM_PROMPT = """당신은 전문 소프트웨어 개발자 AI 에이전트입니다. 
 사용자의 요청에 따라 코드를 작성, 수정, 분석하고 터미널 명령을 실행할 수 있습니다.
@@ -50,18 +63,37 @@ class AgentState(TypedDict):
     messages: Annotated[list, add_messages]
 
 
+def create_llm(model_name: str, temperature: float = 0.0):
+    """모델 이름에 따라 적절한 LLM 인스턴스 생성
+
+    Args:
+        model_name: 모델 이름 (ollama:모델명 또는 OpenAI 모델명)
+        temperature: 생성 온도
+
+    Returns:
+        LLM 인스턴스
+    """
+    if model_name.startswith(OLLAMA_PREFIX):
+        # Ollama 모델
+        ollama_model = model_name[len(OLLAMA_PREFIX):]
+        return ChatOllama(model=ollama_model, temperature=temperature)
+    else:
+        # OpenAI 모델
+        return ChatOpenAI(model=model_name, temperature=temperature)
+
+
 def create_agent(model_name: str = "gpt-4o", temperature: float = 0.0):
     """코딩 에이전트 생성
 
     Args:
-        model_name: 사용할 OpenAI 모델 이름
+        model_name: 모델 이름 (ollama:모델명 또는 OpenAI 모델명)
         temperature: 생성 온도 (0.0 = 결정적, 1.0 = 창의적)
 
     Returns:
         컴파일된 LangGraph 에이전트
     """
     # LLM 설정
-    llm = ChatOpenAI(model=model_name, temperature=temperature)
+    llm = create_llm(model_name, temperature)
     llm_with_tools = llm.bind_tools(ALL_TOOLS)
 
     # 도구 노드
